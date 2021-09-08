@@ -22,6 +22,17 @@ export class MailService {
 
     }
 
+    demandeTechnician(email: string, demande: Demande) {
+
+        return this.mailerService.sendMail({
+            from: 'Greenriders <greenridersnewtest@outlook.com>',
+            to: email,
+            subject: "Une Demande a été prise en charge",
+            text: "",
+            html: `<p>Votre demande a été prise en charge pour la réparation. Votre numéro RMA est ${demande.numRMA} </p>`,
+        })
+
+    }
     demandeRecieved(email: string, demande: Demande) {
 
         return this.mailerService.sendMail({

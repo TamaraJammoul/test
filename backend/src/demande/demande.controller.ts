@@ -129,6 +129,11 @@ export class DemandeController {
     return this.service.getAll({ distributeurId: id });
   }
 
+  @Get('/distributeur/email/:email')
+  async getDemandesByDistributeurEmail(@Param('email') email: string) {
+    const dist = await this.distributuerService.getByEmail(email);
+    return this.service.getAll({ distributeurId: dist.id });
+  }
   // @Get('paginated')
   // async index(
   //   @Query('page') page : number = 1,
@@ -286,6 +291,8 @@ export class DemandeController {
     // payload.technienId = user.technicien.id;
 
     payload.status = Status.Repare;
+    const demande = await this.service.getById(id);
+    this.mailService.demandeRepare(demande.technicien.email, demande);
 
     return this.service.update(id, payload);
   }
@@ -345,7 +352,8 @@ export class DemandeController {
     this.mailService.demandeReparation(demande.distributeur.email, demande);
 
     //notify technicien
-    this.mailService.demandeReparation(demande.technicien.email, demande);
+    const technicien = await this.userService.findById(demande.technicienId);
+    this.mailService.demandeTechnician(technicien.email, demande);
 
     return updateResult;
   }

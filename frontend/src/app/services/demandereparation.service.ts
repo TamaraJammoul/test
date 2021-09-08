@@ -70,7 +70,7 @@ export class DemandereparationService {
   }
 
   public getByDistributeur(email: string): Observable<any> {
-    return this.HttpClient.get(this.api + '/distributeur/' + email)
+    return this.HttpClient.get(this.api + '/distributeur/email/' + email)
       .pipe(map(data => data));
   }
 
